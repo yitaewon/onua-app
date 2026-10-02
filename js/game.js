@@ -529,11 +529,15 @@ function renderNightStep() {
     section.innerHTML = "";
     section.className = "screen night-step-screen sleep-phase";
     section.appendChild(el("div", "sleep-text", step.sleepText));
-    playVoice(step.voiceSleepId);
-    setTimeout(() => {
-      state.currentStepIndex += 1;
-      render();
-    }, 1600);
+    // "~, 눈을 감으세요" 음성이 실제로 다 끝난 뒤 1초를 쉬고서야 다음 역할을 호명한다.
+    // (예전엔 음성 길이와 무관하게 고정 1.6초 뒤 바로 다음으로 넘어가서, 음성이 길면
+    //  "눈을 감으세요"가 끝나기도 전에 다음 역할 "일어나세요" 음성이 겹쳐버렸다.)
+    playVoice(step.voiceSleepId, () => {
+      setTimeout(() => {
+        state.currentStepIndex += 1;
+        render();
+      }, 1000);
+    });
   }
 
   // --- 대기 시간(countdown)은 "~, 일어나세요" + prompt 음성이 다 끝난 뒤부터 센다 ---
