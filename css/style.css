@@ -1,0 +1,656 @@
+/* ONUA 진행 도우미 — 다크/네온 에일리언 테마 */
+
+:root {
+  --void: #05070a;
+  --panel: #0e1620;
+  --panel-alt: #111c28;
+  --line: #1f2f3d;
+  --toxin: #6dffa0;
+  --toxin-dim: #2f6b4c;
+  --signal: #b07bff;
+  --warn: #ff5d6c;
+  --text: #e9f7f0;
+  --text-dim: #7f97a3;
+  --radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at 50% 0%, #0c1a16 0%, var(--void) 55%);
+  color: var(--text);
+  font-family: "Space Grotesk", "Inter", -apple-system, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px 60px;
+}
+
+#app {
+  width: 100%;
+  max-width: 480px;
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  margin: 6px 0 0;
+  color: var(--toxin);
+  text-shadow: 0 0 18px rgba(109, 255, 160, 0.35);
+}
+
+.subtitle,
+.prompt {
+  font-family: "Inter", -apple-system, sans-serif;
+  color: var(--text-dim);
+  font-size: 0.98rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.prompt {
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--signal);
+  padding: 14px 16px;
+  border-radius: var(--radius);
+}
+
+.step-counter {
+  font-family: "Inter", monospace;
+  font-size: 0.8rem;
+  color: var(--toxin-dim);
+  letter-spacing: 0.08em;
+}
+
+.field-label {
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.number-input,
+.role-select {
+  background: var(--panel-alt);
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  width: 100%;
+}
+
+.number-input.small {
+  width: 84px;
+}
+
+.number-input:focus,
+.role-select:focus {
+  outline: none;
+  border-color: var(--toxin);
+  box-shadow: 0 0 0 3px rgba(109, 255, 160, 0.15);
+}
+
+.btn {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 0.98rem;
+  padding: 13px 18px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--toxin) 0%, #35c97a 100%);
+  color: #04140b;
+  box-shadow: 0 0 22px rgba(109, 255, 160, 0.25);
+}
+
+.btn-secondary {
+  background: var(--panel-alt);
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+
+.btn.small {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+}
+
+.btn-row {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-row .btn {
+  flex: 1;
+}
+
+.role-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 52vh;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.role-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.role-card input[type="checkbox"] {
+  margin-top: 4px;
+  accent-color: var(--toxin);
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.role-name {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.role-summary {
+  font-family: "Inter", sans-serif;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.timer-display {
+  font-size: 3rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--signal);
+  text-shadow: 0 0 24px rgba(176, 123, 255, 0.4);
+  padding: 20px 0;
+}
+
+.kill-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kill-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.result-item {
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.result-item.win {
+  border-left: 4px solid var(--toxin);
+}
+
+.result-item.lose {
+  border-left: 4px solid var(--warn);
+}
+
+.result-label {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.result-status {
+  font-family: "Inter", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+
+.result-item.win .result-status {
+  color: var(--toxin);
+}
+
+.result-item.lose .result-status {
+  color: var(--warn);
+}
+
+.result-reason {
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+/* ---------------- 공용 헤더 / 타이머 버튼 ---------------- */
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.app-header-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--toxin-dim);
+  font-size: 0.85rem;
+}
+
+.timer-fab {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--panel-alt);
+  color: var(--toxin);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+/* ---------------- 랜딩(타이틀) 화면 ---------------- */
+
+.landing-screen {
+  align-items: center;
+  text-align: center;
+  padding-top: 8vh;
+}
+
+.poster {
+  position: relative;
+  width: 100%;
+  max-width: 260px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.poster-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(109, 255, 160, 0.35) 0%, rgba(109, 255, 160, 0) 70%);
+  filter: blur(4px);
+}
+
+.poster-silhouette {
+  position: relative;
+  font-size: 6.5rem;
+  filter: drop-shadow(0 0 22px rgba(109, 255, 160, 0.55));
+}
+
+.landing-title-wrap {
+  line-height: 1.05;
+  margin-top: 4px;
+}
+
+.landing-title-one,
+.landing-title-ultimate {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--text);
+  letter-spacing: 0.06em;
+}
+
+.landing-title-alien {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 3rem;
+  background: linear-gradient(135deg, var(--toxin) 0%, var(--signal) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 0.04em;
+}
+
+.landing-subtitle {
+  color: var(--text-dim);
+  font-family: "Inter", sans-serif;
+  font-size: 0.9rem;
+  margin: 14px 0 28px;
+}
+
+.btn-large {
+  width: 100%;
+  padding: 16px;
+  font-size: 1.05rem;
+}
+
+/* ---------------- 역할 선택 그리드 ---------------- */
+
+.role-select-screen {
+  padding-bottom: 84px; /* 하단 고정바 공간 확보 */
+}
+
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.role-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 4px;
+  cursor: pointer;
+  color: var(--text-dim);
+  opacity: 0.55;
+  transition: opacity 0.15s ease, border-color 0.15s ease, transform 0.08s ease;
+}
+
+.role-tile:active {
+  transform: scale(0.96);
+}
+
+.role-tile .role-tile-badge {
+  font-size: 1.6rem;
+}
+
+.role-tile .role-tile-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.role-tile .role-tile-name-en {
+  font-size: 0.6rem;
+  color: var(--text-dim);
+}
+
+.role-tile.selected {
+  opacity: 1;
+  border-color: var(--toxin);
+  background: var(--panel-alt);
+  box-shadow: 0 0 16px rgba(109, 255, 160, 0.25);
+}
+
+.select-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+  background: rgba(10, 16, 22, 0.92);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid var(--line);
+}
+
+.select-count {
+  font-family: "Inter", monospace;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.select-bar .btn {
+  flex-shrink: 0;
+}
+
+/* ---------------- 타이머 모달 ---------------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 4, 6, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 20px;
+}
+
+.modal-panel {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--toxin);
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-body-text {
+  font-family: "Inter", sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0;
+}
+
+/* ---------------- 눈 감기 인트로 ---------------- */
+
+.eyes-closed-screen {
+  align-items: center;
+  text-align: center;
+  padding-top: 20vh;
+  gap: 20px;
+}
+
+.eyes-closed-text {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: var(--toxin);
+  text-shadow: 0 0 20px rgba(109, 255, 160, 0.35);
+}
+
+/* ---------------- 밤 스텝 화면 ---------------- */
+
+.night-step-screen {
+  position: relative;
+  align-items: center;
+  text-align: center;
+}
+
+.countdown-badge {
+  align-self: flex-end;
+  font-family: "Inter", monospace;
+  font-size: 0.9rem;
+  color: var(--signal);
+  background: var(--panel-alt);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+
+.wake-text {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--text);
+  margin-top: 4px;
+}
+
+.wake-action {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  color: var(--toxin);
+}
+
+.photo-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.photo-frame {
+  width: 200px;
+  height: 274px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--panel-alt);
+}
+
+.photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-placeholder {
+  width: 200px;
+  height: 274px;
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--text-dim);
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+  white-space: pre-line;
+  text-align: center;
+  background: var(--panel-alt);
+  flex-shrink: 0;
+}
+
+.photo-placeholder-badge {
+  font-size: 2.2rem;
+}
+
+.night-step-screen .prompt {
+  width: 100%;
+  text-align: left;
+}
+
+.input-area {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.waiting-text {
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin: 2px 0 0;
+}
+
+.sleep-phase {
+  justify-content: center;
+  min-height: 50vh;
+}
+
+.sleep-text {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--signal);
+  text-shadow: 0 0 20px rgba(176, 123, 255, 0.4);
+}
+
+/* ---------------- 결과 입력: 리더 체크박스 ---------------- */
+
+.leader-check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--signal);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  cursor: pointer;
+}
+
+.leader-check-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--signal);
+  flex-shrink: 0;
+}
+
+.leader-check-label {
+  font-family: "Inter", sans-serif;
+  font-size: 0.88rem;
+  color: var(--text);
+}
