@@ -158,11 +158,22 @@ function openInfoModal(title, bodyText) {
   const closeBtn = el("button", "modal-close", "×");
   closeBtn.onclick = closeInfoModal;
 
-  panel.append(
-    closeBtn,
-    el("h2", "modal-title", title),
-    el("p", "modal-body-text", bodyText)
-  );
+  const bodyEl = el("p", "modal-body-text");
+  // "행동:" / "승리 조건:" / "참고:" 같은 소제목 줄은 굵게 강조해서 가시성을 높인다.
+  // (textContent만 쓰면 \n이 줄바꿈으로 안 보이므로, 줄 단위로 직접 DOM을 구성한다.)
+  const lines = (bodyText || "").split("\n");
+  lines.forEach((line, idx) => {
+    const trimmed = line.trim();
+    if (/^(행동|승리 조건|참고):$/.test(trimmed)) {
+      const label = el("strong", "tooltip-label", trimmed);
+      bodyEl.appendChild(label);
+    } else {
+      bodyEl.appendChild(document.createTextNode(line));
+    }
+    if (idx < lines.length - 1) bodyEl.appendChild(el("br"));
+  });
+
+  panel.append(closeBtn, el("h2", "modal-title", title), bodyEl);
   overlay.appendChild(panel);
   overlay.onclick = (e) => {
     if (e.target === overlay) closeInfoModal();
