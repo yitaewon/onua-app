@@ -34,7 +34,17 @@ function stopVoice() {
  * 여러 개 동시에 돌고, 역할 단계가 통째로 순식간에 넘어가 버리는 문제가 있었다.
  * → "이번 항목은 이미 처리했다"는 상태(settled)를 둬서 항목당 정확히 한 번만
  *   다음으로 넘어가도록 막는다.
+ *
+ * 추가 안전장치(watchdog): 아주 가끔 파일을 불러오는 중 네트워크/디코딩이
+ * 멈춰버려서(stalled) onended·onerror·play().catch 중 아무것도 발생하지
+ * 않는 경우가 있다. 이때 아무 보호 장치가 없으면 다음으로 넘어갈 신호가
+ * 영원히 오지 않아 — 특히 "눈을 감으세요" 음성 재생 중이면 그 화면에서
+ * 앱이 완전히 멈춰버린 것처럼 보인다. 그래서 음성 하나당 최대
+ * VOICE_WATCHDOG_MS(=8초)까지만 기다리고, 그래도 아무 신호가 없으면
+ * 강제로 다음 항목으로 넘어간다.
  */
+const VOICE_WATCHDOG_MS = 8000;
+
 function playVoiceSequence(ids, onDone) {
   stopVoice();
   const list = (ids || []).filter(Boolean);
@@ -58,9 +68,11 @@ function playVoiceSequence(ids, onDone) {
     currentVoiceAudio = audio;
 
     let settled = false; // 이 audio 하나에 대해 한 번만 다음으로 넘어가게
+    const watchdog = setTimeout(advance, VOICE_WATCHDOG_MS);
     function advance() {
       if (settled) return;
       settled = true;
+      clearTimeout(watchdog);
       audio.onended = null;
       audio.onerror = null;
       playNext();
